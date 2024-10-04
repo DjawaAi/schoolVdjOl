@@ -21,7 +21,7 @@ public class FacultyService {
         return faculties.get(facultyId);
     }
 
-    public Faculty updataFaculty(Long facultyId, Faculty faculty) {
+    public Faculty updateFaculty(Long facultyId, Faculty faculty) {
         faculties.put(facultyId, faculty);
         return faculty;
     }

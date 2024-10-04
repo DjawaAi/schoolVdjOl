@@ -21,7 +21,7 @@ public class StudentService {
         return students.get(StudentId);
     }
 
-    public Student updataStudent(Long StudentId, Student Student) {
+    public Student updateStudent(Long StudentId, Student Student) {
         students.put(StudentId, Student);
         return Student;
     }
