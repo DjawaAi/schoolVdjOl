@@ -7,7 +7,7 @@ import ru.vdjOlhogwarts.school.service.StudentService;
 
 import java.util.List;
 
-@RequestMapping("{student}")
+@RequestMapping("/student")
 @RestController
 public class StudentController {
     private final StudentService studentService;
@@ -18,9 +18,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student crtdStudent = studentService.createStudent(student);
-        return ResponseEntity.ok(crtdStudent);
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
     }
 
     @GetMapping("{studentId}")
@@ -28,8 +27,9 @@ public class StudentController {
         Student student = studentService.getStudent(studentId);
         if (student == null) {
             return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(student);
         }
-        return ResponseEntity.ok(student);
     }
 
     @PutMapping
@@ -42,9 +42,8 @@ public class StudentController {
     }
 
     @DeleteMapping("{studentId}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long studentId) {
-        Student delStudent = studentService.deleteStudent(studentId);
-        return ResponseEntity.ok(delStudent);
+    public Student deleteStudent(@PathVariable Long studentId) {
+        return studentService.deleteStudent(studentId);
     }
 
     @GetMapping("{filter}")

@@ -7,7 +7,7 @@ import ru.vdjOlhogwarts.school.service.FacultyService;
 
 import java.util.List;
 
-@RequestMapping("{faculty}")
+@RequestMapping("/faculty")
 @RestController
 public class FacultyController {
     private final FacultyService facultyService;
@@ -18,9 +18,8 @@ public class FacultyController {
     }
 
     @PostMapping
-    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
-        Faculty crtdFaculty = facultyService.createFaculty(faculty);
-        return ResponseEntity.ok(crtdFaculty);
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
+        return facultyService.createFaculty(faculty);
     }
 
     @GetMapping("{facultyId}")

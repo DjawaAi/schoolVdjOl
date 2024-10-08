@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
     private final Map<Long, Student> students = new HashMap<>();
-    private Long countId = 1L;
+    private Long countId = 0L;
 
-    public Student createStudent(Student Student) {
-        students.put(countId, Student);
-        countId++;
-        return Student;
+    public Student createStudent(Student student) {
+        students.put(countId, student);
+        ++countId;
+        return student;
     }
 
-    public Student getStudent(Long StudentId) {
-        return students.get(StudentId);
+    public Student getStudent(Long studentId) {
+        return students.get(studentId);
     }
 
     public Student updateStudent(Long StudentId, Student Student) {
