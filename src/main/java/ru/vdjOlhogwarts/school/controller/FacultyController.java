@@ -7,7 +7,7 @@ import ru.vdjOlhogwarts.school.service.FacultyService;
 
 import java.util.List;
 
-@RequestMapping("faculty")
+@RequestMapping("{faculty}")
 @RestController
 public class FacultyController {
     private final FacultyService facultyService;
