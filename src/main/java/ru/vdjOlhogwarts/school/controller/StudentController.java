@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.service.StudentService;
 
+import java.util.List;
+
 @RequestMapping("student")
 @RestController
 public class StudentController {
@@ -45,4 +47,8 @@ public class StudentController {
         return ResponseEntity.ok(delStudent);
     }
 
+    @GetMapping("{filter}")
+    public List<Student> getStudentsByAge(@RequestParam int age) {
+        return studentService.findStudentsByAge(age);
+    }
 }

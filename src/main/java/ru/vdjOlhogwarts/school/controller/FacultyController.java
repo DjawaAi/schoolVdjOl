@@ -3,8 +3,9 @@ package ru.vdjOlhogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vdjOlhogwarts.school.model.Faculty;
-import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.service.FacultyService;
+
+import java.util.List;
 
 @RequestMapping("faculty")
 @RestController
@@ -44,5 +45,10 @@ public class FacultyController {
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long facultyId) {
         Faculty delFaculty = facultyService.deleteFaculty(facultyId);
         return ResponseEntity.ok(delFaculty);
+    }
+
+    @GetMapping("{filter}")
+    public List<Faculty> getFacultiesByColor(@RequestParam String color) {
+        return facultyService.findByColor(color);
     }
 }
