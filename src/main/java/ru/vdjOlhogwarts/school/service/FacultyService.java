@@ -14,8 +14,8 @@ public class FacultyService {
     private Long countId = 0L;
 
     public Faculty createFaculty(Faculty faculty) {
-        faculties.put(countId, faculty);
-        countId++;
+        faculty.setId(countId);
+        faculties.put(countId++, faculty);
         return faculty;
     }
 
@@ -24,6 +24,9 @@ public class FacultyService {
     }
 
     public Faculty updateFaculty(Long facultyId, Faculty faculty) {
+        if (!faculties.containsKey(facultyId)) {
+            return null;
+        }
         faculties.put(facultyId, faculty);
         return faculty;
     }

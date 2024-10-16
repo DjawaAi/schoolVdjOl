@@ -15,8 +15,8 @@ public class StudentService {
     private Long countId = 0L;
 
     public Student createStudent(Student student) {
-        students.put(countId, student);
-        ++countId;
+        student.setId(countId);
+        students.put(countId++, student);
         return student;
     }
 
@@ -24,13 +24,16 @@ public class StudentService {
         return students.get(studentId);
     }
 
-    public Student updateStudent(Long StudentId, Student Student) {
-        students.put(StudentId, Student);
-        return Student;
+    public Student updateStudent(Long studentId, Student student) {
+        if (!students.containsKey(studentId)) {
+            return null;
+        }
+        students.put(studentId, student);
+        return student;
     }
 
-    public Student deleteStudent(Long StudentId) {
-        return students.remove(StudentId);
+    public Student deleteStudent(Long studentId) {
+        return students.remove(studentId);
     }
 
     public List<Student> findStudentsByAge(int age) {

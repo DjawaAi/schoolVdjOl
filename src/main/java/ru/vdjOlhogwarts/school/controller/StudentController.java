@@ -1,5 +1,6 @@
 package ru.vdjOlhogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vdjOlhogwarts.school.model.Student;
@@ -7,8 +8,8 @@ import ru.vdjOlhogwarts.school.service.StudentService;
 
 import java.util.List;
 
-@RequestMapping("/student")
 @RestController
+@RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
 
@@ -36,18 +37,19 @@ public class StudentController {
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
         Student crtdStudent = studentService.updateStudent(student.getId(), student);
         if (crtdStudent == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(crtdStudent);
     }
 
     @DeleteMapping("{studentId}")
-    public Student deleteStudent(@PathVariable Long studentId) {
-        return studentService.deleteStudent(studentId);
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(studentService.deleteStudent(studentId));
     }
 
-    @GetMapping("{filter}")
-    public List<Student> getStudentsByAge(@RequestParam int age) {
+    @GetMapping("/filter/{age}")
+    public List<Student> getStudentsByAge(@PathVariable int age) {
         return studentService.findStudentsByAge(age);
     }
 }
+
