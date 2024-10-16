@@ -28,9 +28,8 @@ public class StudentController {
         Student student = studentService.getStudent(studentId);
         if (student == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(student);
         }
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping

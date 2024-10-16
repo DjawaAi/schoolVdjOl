@@ -11,11 +11,12 @@ import java.util.stream.Collectors;
 @Service
 public class FacultyService {
     @Autowired
-    private final FacultyRepository facultyRepository;
+    private FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
+
 
     public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
