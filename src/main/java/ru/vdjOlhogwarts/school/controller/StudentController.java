@@ -35,7 +35,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student crtdStudent = studentService.updateStudent(student.getId(), student);
+        Student crtdStudent = studentService.updateStudent(student);
         if (crtdStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
