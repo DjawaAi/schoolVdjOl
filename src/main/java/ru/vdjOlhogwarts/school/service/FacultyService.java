@@ -1,42 +1,40 @@
 package ru.vdjOlhogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vdjOlhogwarts.school.model.Faculty;
+import ru.vdjOlhogwarts.school.repository.FacultyRepository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
-    private final Map<Long, Faculty> faculties = new HashMap<>();
-    private Long countId = 0L;
+    @Autowired
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(countId);
-        faculties.put(countId++, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty getFaculty(Long facultyId) {
-        return faculties.get(facultyId);
+        return facultyRepository.findById(facultyId).get();
     }
 
     public Faculty updateFaculty(Long facultyId, Faculty faculty) {
-        if (!faculties.containsKey(facultyId)) {
-            return null;
-        }
-        faculties.put(facultyId, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(Long facultyId) {
-        return faculties.remove(facultyId);
+    public void deleteFaculty(Long facultyId) {
+        facultyRepository.deleteById(facultyId);
     }
 
     public List<Faculty> findByColor(String color) {
-        return faculties.values()
+        return facultyRepository.findAll()
                 .stream()
                 .filter(faculty -> faculty.getColor().equalsIgnoreCase(color))
                 .collect(Collectors.toList());
