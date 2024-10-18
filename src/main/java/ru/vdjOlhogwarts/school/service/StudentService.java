@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class StudentService {
         return studentRepository.findById(studentId).get();
     }
 
-    public Student updateStudent( Student student) {
+    public Student updateStudent(Student student) {
         return studentRepository.save(student);
     }
 
@@ -35,10 +36,7 @@ public class StudentService {
     }
 
     public List<Student> findStudentsByAge(int age) {
-        return studentRepository.findAll()
-                .stream()
-                .filter(student -> student.getAge() == age)
-                .collect(Collectors.toList());
+        return studentRepository.findByAge(age);
     }
 }
 
