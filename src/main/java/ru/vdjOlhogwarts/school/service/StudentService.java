@@ -2,6 +2,7 @@ package ru.vdjOlhogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.vdjOlhogwarts.school.model.Faculty;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
@@ -38,5 +39,10 @@ public class StudentService {
     public List<Student> findStudentsByAge(int age) {
         return studentRepository.findByAge(age);
     }
+
+    public List<Student> findStudentsByAgeBetween(int minAge, int maxAge) {
+        return studentRepository.findByAgeBetween(minAge, maxAge);
+    }
+
 }
 

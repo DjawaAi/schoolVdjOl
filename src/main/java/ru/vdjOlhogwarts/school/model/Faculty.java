@@ -3,7 +3,9 @@ package ru.vdjOlhogwarts.school.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,12 @@ public class Faculty {
     private String name;
     private String color;
 
+    @OneToMany(mappedBy = "faculty")
+    private List<Student> students;
+
+    public List<Student> getStudents() {
+        return students;
+    }
 
     public Long getId() {
         return id;
@@ -61,4 +69,5 @@ public class Faculty {
     public int hashCode() {
         return Objects.hash(id, name, color);
     }
+
 }
