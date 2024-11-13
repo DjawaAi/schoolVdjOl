@@ -17,6 +17,10 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
     public long getId() {
         return id;
     }
@@ -61,9 +65,5 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, age);
-    }
-
-    public Faculty getFaculty() {
-        return faculty;
     }
 }

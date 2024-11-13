@@ -2,16 +2,13 @@ package ru.vdjOlhogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.vdjOlhogwarts.school.model.Faculty;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class StudentService {
+public class  StudentService {
     @Autowired
     private StudentRepository studentRepository;
 

@@ -10,7 +10,6 @@ import ru.vdjOlhogwarts.school.service.FacultyService;
 import java.util.Collection;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/faculty")
 public class FacultyController {
@@ -68,7 +67,7 @@ public class FacultyController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/filter/students/{facultyId}")
+    @GetMapping("/find/{facultyId}")
     public ResponseEntity<List<Student>> getFacultyStudents(@PathVariable Long facultyId) {
         List<Student> students = facultyService.getStudentsByFacultyId(facultyId);
         if (students != null && !students.isEmpty()) {

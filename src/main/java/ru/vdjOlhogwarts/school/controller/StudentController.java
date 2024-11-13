@@ -3,7 +3,6 @@ package ru.vdjOlhogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.vdjOlhogwarts.school.model.Faculty;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.service.StudentService;
 
@@ -62,9 +61,9 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/filter/faculty/{id}")
-    public ResponseEntity<Faculty> getFacultyOfStudent(@PathVariable Long id) {
-        Faculty faculty = studentService.getStudent(id).getFaculty();
+    @GetMapping("/find/{studentId}")
+    public ResponseEntity<String> getFacultyOfStudent(@PathVariable Long studentId) {
+        String faculty = studentService.getStudent(studentId).getFaculty().getName();
         if (faculty == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
