@@ -1,33 +1,45 @@
 package ru.vdjOlhogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vdjOlhogwarts.school.model.Student;
+import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Service
-public class StudentService {
-    private final Map<Long, Student> students = new HashMap<>();
-    private Long countId = 1L;
+public class  StudentService {
+    @Autowired
+    private StudentRepository studentRepository;
 
-    public Student createStudent(Student Student) {
-        students.put(countId, Student);
-        countId++;
-        return Student;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public Student getStudent(Long StudentId) {
-        return students.get(StudentId);
+
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
     }
 
-    public Student updataStudent(Long StudentId, Student Student) {
-        students.put(StudentId, Student);
-        return Student;
+    public Student getStudent(Long studentId) {
+        return studentRepository.findById(studentId).get();
     }
 
-    public Student deleteStudent(Long StudentId) {
-        return students.remove(StudentId);
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
     }
+
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
+    }
+
+    public List<Student> findStudentsByAge(int age) {
+        return studentRepository.findByAge(age);
+    }
+
+    public List<Student> findStudentsByAgeBetween(int minAge, int maxAge) {
+        return studentRepository.findByAgeBetween(minAge, maxAge);
+    }
+
 }
 
