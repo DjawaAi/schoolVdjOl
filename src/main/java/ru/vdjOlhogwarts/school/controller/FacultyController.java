@@ -76,5 +76,4 @@ public class FacultyController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

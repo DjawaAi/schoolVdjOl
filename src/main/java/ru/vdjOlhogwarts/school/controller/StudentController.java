@@ -1,5 +1,6 @@
 package ru.vdjOlhogwarts.school.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/student")
 public class StudentController {
+
+    @Autowired
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
@@ -32,8 +35,9 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @PutMapping
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        student.setId(id);
         Student crtdStudent = studentService.updateStudent(student);
         if (crtdStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

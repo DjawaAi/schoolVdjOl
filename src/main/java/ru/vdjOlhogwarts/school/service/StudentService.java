@@ -8,7 +8,7 @@ import ru.vdjOlhogwarts.school.repository.StudentRepository;
 import java.util.List;
 
 @Service
-public class  StudentService {
+public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
@@ -26,6 +26,9 @@ public class  StudentService {
     }
 
     public Student updateStudent(Student student) {
+        if (!studentRepository.existsById(student.getId())) {
+            return null;
+        }
         return studentRepository.save(student);
     }
 
