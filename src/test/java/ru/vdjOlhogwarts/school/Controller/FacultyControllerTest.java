@@ -17,9 +17,10 @@ import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.FacultyRepository;
 import ru.vdjOlhogwarts.school.service.FacultyService;
 
-import java.util.Collection;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -119,26 +120,63 @@ class FacultyControllerTest {
     @Test
     void getFacultiesByNameOrColor() {
         // По имени
-        ResponseEntity<Collection<Faculty>> responseByName = restTemplate.getForEntity("/faculty/filter/nameOrColor?", Collection<faculty>, "Густеван");
+        ResponseEntity<List<Faculty>> responseByName = restTemplate.exchange(
+                "/faculty/filter/nameOrColor?name={name}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {}, "Густеван");
         assertThat(responseByName.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseByName.getBody()).isNotNull();
         assertThat(responseByName.getBody().size()).isEqualTo(1);
 
         // По цвету
-        ResponseEntity<Collection<Faculty>> responseByColor = restTemplate.getForEntity("/faculty/filter/nameOrColor?color={color}", Collection.class, "Blue");
+        ResponseEntity<List<Faculty>> responseByColor = restTemplate.exchange(
+                "/faculty/filter/nameOrColor?color={color}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {},
+                "КишМиш"
+        );
         assertThat(responseByColor.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseByColor.getBody()).isNotNull();
         assertThat(responseByColor.getBody().size()).isEqualTo(1);
 
         // По имени и цвету
-        ResponseEntity<Collection<Faculty>> responseByNameAndColor = restTemplate.getForEntity("/faculty/filter/nameOrColor?", Collection.class, "Science", "Green");
+        ResponseEntity<List<Faculty>> responseByNameAndColor = restTemplate.exchange(
+                "/faculty/filter/nameOrColor?name={name}&color={color}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {},
+                "Густеван", "КишМиш"
+        );
         assertThat(responseByNameAndColor.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseByNameAndColor.getBody()).isNotNull();
         assertThat(responseByNameAndColor.getBody().size()).isEqualTo(1);
     }
 
     @Test
-    void getFacultyStudents() {
-        ResponseEntity<List<Student>> response = restTemplate.exchange("/faculty/find/{facultyId}",
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
-                }, faculty.getId());
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    void getFacultyStudents_ReturnsStudents_WhenFacultyExists() {
+        Long facultyId = 5L; // Убедитесь, что это ID существующего факультета с студентами
+
+        ResponseEntity<List<Student>> response = restTemplate.getForEntity("/faculty/find/{facultyId}",
+                (Class<List<Student>>) (Class<?>) List.class, facultyId);
+
+        // Проверка статуса ответа
+        assertThat(response.getStatusCode()).isEqualTo( OK);
+
+        // Проверка содержимого
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().size()).isGreaterThan(0); // Проверка на наличие студентов
+    }
+
+    @Test
+    void getFacultyStudents_ReturnsNotFound_WhenFacultyDoesNotExist() {
+        Long invalidFacultyId = 999L; // Убедитесь, что такого факультета нет
+
+        ResponseEntity<List<Student>> response = restTemplate.getForEntity("/faculty/find/{facultyId}",
+                (Class<List<Student>>) (Class<?>) List.class, invalidFacultyId);
+
+        // Проверка статуса ответа
+        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
     }
 }
