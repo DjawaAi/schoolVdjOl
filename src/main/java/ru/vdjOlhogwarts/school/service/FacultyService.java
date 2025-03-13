@@ -7,7 +7,9 @@ import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -49,6 +51,12 @@ public class FacultyService {
     }
 
     public List<Student> getStudentsByFacultyId(Long facultyId) {
-        return facultyRepository.findById(facultyId).get().getStudents();
+        Optional<Faculty> facultyOptional = facultyRepository.findById(facultyId);
+        if (facultyOptional.isPresent()) {
+            Faculty faculty = facultyOptional.get();
+            return facultyRepository.findById(facultyId).get().getStudents();
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

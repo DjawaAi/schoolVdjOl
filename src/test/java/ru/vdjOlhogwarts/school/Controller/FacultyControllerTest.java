@@ -1,5 +1,6 @@
 package ru.vdjOlhogwarts.school.Controller;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,12 @@ import org.springframework.http.ResponseEntity;
 import ru.vdjOlhogwarts.school.model.Faculty;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.repository.FacultyRepository;
-import ru.vdjOlhogwarts.school.service.FacultyService;
+import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -35,30 +34,45 @@ class FacultyControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private FacultyService facultyService;
+    private FacultyRepository facultyRepository;
 
 
     @Autowired
-    private FacultyRepository facultyRepository;
+    private StudentRepository studentRepository;
 
     private Faculty faculty;
     private Faculty faculty1;
+    private Faculty faculty2;
+    private Student student;
+
 
     @BeforeEach
-    void setUp() {
+    void setUP() {
         faculty = new Faculty();
-        faculty.setId(703L);
-        faculty.setName("Густеван");
-        faculty.setColor("КишМиш");
+        faculty.setId(1L);
+        faculty.setName("Tj");
+        faculty.setColor("Gr");
 
         faculty1 = new Faculty();
-        faculty1.setId(653L);
-        faculty1.setName("Густеван1");
-        faculty1.setColor("КишМиш1");
+        faculty1.setId(2L);
+        faculty1.setName("Sd");
+        faculty1.setColor("Yl");
 
-        //  facultyService.createFaculty(faculty);
-        //  facultyService.createFaculty(faculty1);
+        faculty2 = new Faculty();
+        faculty2.setId(3L);
+        faculty2.setName("SdI");
+        faculty2.setColor("YlG");
+
+        student = new Student();
+        student.setId(1L);
+        student.setName("Ds");
+        student.setAge(30);
+        student.setFaculty(faculty1);
+
         faculty = facultyRepository.save(faculty);
+        faculty1 = facultyRepository.save(faculty1);
+        facultyRepository.save(faculty2);
+        studentRepository.save(student);
     }
 
     @Test
@@ -76,6 +90,14 @@ class FacultyControllerTest {
     }
 
     @Test
+    void getFacultyByColor() {
+        ResponseEntity<Faculty> response = restTemplate.getForEntity("/faculty/filter/{color}", Faculty.class, "Gr");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getColor()).isEqualTo("Gr");
+    }
+
+    @Test
     void getFaculty() {
         ResponseEntity<Faculty> response = restTemplate.getForEntity("/faculty/{facultyId}", Faculty.class, faculty.getId());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -85,36 +107,14 @@ class FacultyControllerTest {
 
     @Test
     void updateFaculty() {
-        faculty.setName("Updated Name");
+        faculty.setName("Mg");
 
         HttpEntity<Faculty> requestEntity = new HttpEntity<>(faculty);
         ResponseEntity<Faculty> response = restTemplate.exchange("/faculty", HttpMethod.PUT, requestEntity, Faculty.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().getName()).isEqualTo("Updated Name");
+        assertThat(response.getBody().getName()).isEqualTo("Mg");
         assertThat(response.getBody()).isNotNull();
-    }
-
-    @Test
-    void deleteFaculty() {
-        ResponseEntity<Void> deleteResponse = restTemplate.exchange("/faculty/{facultyId}", HttpMethod.DELETE, null, Void.class, faculty.getId());
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        ResponseEntity<Faculty> getResponse = restTemplate.getForEntity("/faculty/{facultyId}", Faculty.class, faculty.getId());
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Test
-    void getFacultyByColor() {
-
-        // Выполняем GET запрос к контроллеру
-        ResponseEntity<Faculty> response = restTemplate.getForEntity("/faculty/filter/{color}",
-                Faculty.class, "КишМиш");
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getColor()).isEqualTo("КишМиш");
-
     }
 
     @Test
@@ -124,7 +124,8 @@ class FacultyControllerTest {
                 "/faculty/filter/nameOrColor?name={name}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Faculty>>() {}, "Густеван");
+                new ParameterizedTypeReference<List<Faculty>>() {
+                }, "Sd");
         assertThat(responseByName.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseByName.getBody()).isNotNull();
         assertThat(responseByName.getBody().size()).isEqualTo(1);
@@ -134,8 +135,9 @@ class FacultyControllerTest {
                 "/faculty/filter/nameOrColor?color={color}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Faculty>>() {},
-                "КишМиш"
+                new ParameterizedTypeReference<List<Faculty>>() {
+                },
+                "Yl"
         );
         assertThat(responseByColor.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseByColor.getBody()).isNotNull();
@@ -146,8 +148,9 @@ class FacultyControllerTest {
                 "/faculty/filter/nameOrColor?name={name}&color={color}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Faculty>>() {},
-                "Густеван", "КишМиш"
+                new ParameterizedTypeReference<List<Faculty>>() {
+                },
+                "Sd", "Yl"
         );
         assertThat(responseByNameAndColor.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseByNameAndColor.getBody()).isNotNull();
@@ -155,14 +158,23 @@ class FacultyControllerTest {
     }
 
     @Test
+    void deleteFaculty() {
+        ResponseEntity<Void> deleteResponse = restTemplate.exchange("/faculty/{facultyId}", HttpMethod.DELETE, null, Void.class, faculty2.getId());
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<Faculty> getResponse = restTemplate.getForEntity("/faculty/{facultyId}", Faculty.class, faculty2.getId());
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
     void getFacultyStudents_ReturnsStudents_WhenFacultyExists() {
-        Long facultyId = 5L; // Убедитесь, что это ID существующего факультета с студентами
+        Long facultyId = 2L;
 
         ResponseEntity<List<Student>> response = restTemplate.getForEntity("/faculty/find/{facultyId}",
                 (Class<List<Student>>) (Class<?>) List.class, facultyId);
 
         // Проверка статуса ответа
-        assertThat(response.getStatusCode()).isEqualTo( OK);
+        assertThat(response.getStatusCode()).isEqualTo(OK);
 
         // Проверка содержимого
         assertThat(response.getBody()).isNotNull();
@@ -173,10 +185,15 @@ class FacultyControllerTest {
     void getFacultyStudents_ReturnsNotFound_WhenFacultyDoesNotExist() {
         Long invalidFacultyId = 999L; // Убедитесь, что такого факультета нет
 
-        ResponseEntity<List<Student>> response = restTemplate.getForEntity("/faculty/find/{facultyId}",
-                (Class<List<Student>>) (Class<?>) List.class, invalidFacultyId);
+        ResponseEntity<List<Student>> response = restTemplate.exchange(
+                "/faculty/find/{facultyId}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Student>>() {},
+                invalidFacultyId);
 
         // Проверка статуса ответа
-        assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
 }
