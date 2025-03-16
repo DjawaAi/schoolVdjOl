@@ -162,10 +162,8 @@ class StudentControllerWebMvcTest {
         faculty.setId(1L);
         student.setFaculty(faculty);
 
-        // Подготовка: имитация результата метода getStudent
         when(studentService.getStudent(anyLong())).thenReturn(student);
 
-        // Выполнение запроса
         mockMvc.perform(get("/student/find/{studentId}", 1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) // Ожидаем статус 200 OK

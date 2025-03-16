@@ -189,7 +189,8 @@ class FacultyControllerTest {
                 "/faculty/find/{facultyId}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Student>>() {},
+                new ParameterizedTypeReference<List<Student>>() {
+                },
                 invalidFacultyId);
 
         // Проверка статуса ответа

@@ -50,8 +50,12 @@ public class FacultyController {
     }
 
     @GetMapping("/filter/{color}")
-    public Faculty getFacultyByColor(@PathVariable String color) {
-        return facultyService.findByColor(color);
+    public ResponseEntity<Faculty> getFacultyByColor(@PathVariable String color) {
+        Faculty facultyCol = facultyService.findByColor(color);
+        if (facultyCol == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(facultyCol);
     }
 
     @GetMapping("/filter/nameOrColor")

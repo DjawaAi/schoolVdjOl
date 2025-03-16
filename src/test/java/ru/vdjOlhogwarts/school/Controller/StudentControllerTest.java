@@ -135,7 +135,6 @@ class StudentControllerTest {
     }
 
 
-
     @Test
     void getStudentsByAge() {
         when(studentService.findStudentsByAge(anyInt())).thenReturn(Arrays.asList(student, student2));
@@ -144,7 +143,8 @@ class StudentControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().size()).isEqualTo(2);
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Student> studentsFromResponse = objectMapper.convertValue(response.getBody(), new TypeReference<List<Student>>() {});
+        List<Student> studentsFromResponse = objectMapper.convertValue(response.getBody(), new TypeReference<List<Student>>() {
+        });
         assertThat(studentsFromResponse).containsExactlyInAnyOrder(student, student2);
     }
 
@@ -160,7 +160,8 @@ class StudentControllerTest {
         assertThat(response.getBody()).hasSize(2);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Student> studentsFromResponse = objectMapper.convertValue(response.getBody(), new TypeReference<List<Student>>() {});
+        List<Student> studentsFromResponse = objectMapper.convertValue(response.getBody(), new TypeReference<List<Student>>() {
+        });
         assertThat(studentsFromResponse).containsExactlyInAnyOrder(student, student2);
     }
 
