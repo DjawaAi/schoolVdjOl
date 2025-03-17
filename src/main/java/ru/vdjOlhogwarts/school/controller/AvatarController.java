@@ -11,7 +11,6 @@ import ru.vdjOlhogwarts.school.model.Avatar;
 import ru.vdjOlhogwarts.school.service.AvatarService;
 import ru.vdjOlhogwarts.school.service.StudentService;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
