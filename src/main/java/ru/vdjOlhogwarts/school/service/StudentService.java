@@ -3,6 +3,7 @@ package ru.vdjOlhogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vdjOlhogwarts.school.model.Student;
+import ru.vdjOlhogwarts.school.model.WorksOnStudentsTable;
 import ru.vdjOlhogwarts.school.repository.StudentRepository;
 
 import java.util.List;
@@ -44,5 +45,16 @@ public class StudentService {
         return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 
+    public Long getNumberOfStudents() {
+        return studentRepository.getStudentsNumber();
+    }
+
+    public WorksOnStudentsTable getAverageAgeOfStudents() {
+        return studentRepository.getAverageAgeOfStudents();
+    }
+
+    public List<Student> getLastFiveStudentsInTable() {
+        return studentRepository.getLastFiveStudentsInTable();
+    }
 }
 
