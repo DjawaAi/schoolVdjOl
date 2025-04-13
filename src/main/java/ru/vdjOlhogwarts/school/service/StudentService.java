@@ -56,5 +56,9 @@ public class StudentService {
     public List<Student> getLastFiveStudentsInTable() {
         return studentRepository.getLastFiveStudentsInTable();
     }
+
+    public List<Student> getStudentByName(String name) {
+        return studentRepository.getStudentByName(name);
+    }
 }
 
