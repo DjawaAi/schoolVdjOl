@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.vdjOlhogwarts.school.model.Student;
 import ru.vdjOlhogwarts.school.model.WorksOnStudentsTable;
 import ru.vdjOlhogwarts.school.service.StudentService;
+import ru.vdjOlhogwarts.school.service.StudentServiceProd;
 
 import java.util.List;
 

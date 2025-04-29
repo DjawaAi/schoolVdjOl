@@ -24,4 +24,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> getLastFiveStudentsInTable();
 
     List<Student> getStudentByName(String name);
+
+    boolean existsByName(String name);
 }
