@@ -9,7 +9,7 @@ import ru.vdjOlhogwarts.school.model.WorksOnStudentsTable;
 import java.util.List;
 
 @Service
-@Profile("!production")
+@Profile("development")
 public class StudentServiceTest implements StudentService {
 
     @Override
