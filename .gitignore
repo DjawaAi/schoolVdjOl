@@ -33,5 +33,5 @@ build/
 .vscode/
 /mvnw.cmd
 /mvnw
-/src/main/resources/application.properties
+/src/main/resources/application-production.properties
 /.mvn/wrapper/maven-wrapper.properties

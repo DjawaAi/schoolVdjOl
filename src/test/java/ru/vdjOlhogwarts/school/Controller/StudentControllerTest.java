@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.vdjOlhogwarts.school.controller.StudentController;
 import ru.vdjOlhogwarts.school.model.Faculty;
 import ru.vdjOlhogwarts.school.model.Student;
-import ru.vdjOlhogwarts.school.service.StudentService;
+import ru.vdjOlhogwarts.school.service.StudentServiceProd;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ class StudentControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private StudentService studentService;
+    private StudentServiceProd studentService;
 
     @Autowired
     private StudentController studentController;

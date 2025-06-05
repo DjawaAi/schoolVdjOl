@@ -17,7 +17,6 @@ public class FacultyController {
 
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
-
     }
 
     @PostMapping
